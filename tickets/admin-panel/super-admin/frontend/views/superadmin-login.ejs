@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- Header -->
+<header class="header">
+    <h1>Atul Limited - Suppport Manager Panel</h1>
+</header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Manager Login - Atul Limited</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .header {
+            background-color: #1f6a72;
+            color: white;
+
+            padding: 10px;
+            border-bottom: 2px solid #ddd;
+        }
+            /* Footer */
+    .footer {
+        background-color: #1f6a72;
+        color: white;
+        text-align: center;
+        padding: 1rem;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        z-index: 1000;
+    }
+        body {
+            background: linear-gradient(135deg, #1f6a72 0%, #2c3e50 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+            margin: 20px;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-header img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+        }
+        .login-header h2 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+        .form-control {
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #1f6a72;
+            box-shadow: 0 0 0 0.2rem rgba(31, 106, 114, 0.25);
+        }
+        .input-group-text {
+            background: transparent;
+            border-right: none;
+        }
+        .form-control {
+            border-left: none;
+        }
+        .form-control:focus {
+            border-left: none;
+        }
+        .btn-login {
+            background: linear-gradient(90deg, #1f6a72, #2c3e50);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .company-info {
+            text-align: center;
+            margin-top: 30px;
+            color: #fff;
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            left: 0;
+        }
+        .company-info p {
+            margin: 0;
+            font-size: 14px;
+        }
+        .company-info .company-name {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        @media (max-width: 576px) {
+            .login-container {
+                margin: 20px;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h2>Support Manager Login</h2>
+            <p>Enter your credentials to access the dashboard</p>
+        </div>
+
+        <form action="/superadmin/login" method="POST">
+            <div class="mb-4">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                    <input type="email" class="form-control" name="email" placeholder="Email" required>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                </div>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-login">
+                    <i class="fas fa-sign-in-alt me-2"></i> Login
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="company-info">
+        <p class="company-name">Atul Limited</p>
+        <p>© 2024 All Rights Reserved</p>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

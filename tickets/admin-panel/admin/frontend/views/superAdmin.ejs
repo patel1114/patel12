@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width" , initial_scale="1.0">
+        <title>Superadmin - Assign Tickets</title>
+        <style>
+            body{
+                font-family: Arial,  sans-serif;
+            }
+            .container{
+                display: flex;justify-content: space-between; padding: 20px;
+            }
+            .box{
+                width: 45%;border: 2px solid #000;padding: 10px;min-height: 300px;
+            }
+            .ticket,.admin{
+                padding: 10px;margin: 5px;background-color: lightgray;cursor: grab;border: 1px solid #000;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Superadmin -Assign admins to tickets</h2>
+        <div class="container">
+            <!-- ticket details  -->
+            <div class="box" id="tickets">
+                <h3>Tickets</h3>
+                <% tickets.forEach(ticket => { %>
+                    <div clas="ticket" draggable="true" data-ticket-id="<%= ticket.id %>">
+                        Ticket #<%= ticket.id %> - <%= ticket.location %>
+                    </div>
+                <% }) %>
+            </div>
+        
+
+        <div class="box" id="admins">
+            <h3>Admins</h3>
+            <% admins.forEach(admin => { %>
+                <div class="admin" draggable="true" data-admin-id="<%= admin.id %>">
+                    Admin <%= admin.name %> (<%= amdin.location %>)
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.ticket , .admin').forEach(item=>{
+            item.ondragstart =(event)=>{
+                event.dataTransfer.setData('id',event.target.dataset.ticketId || event.target.dataset.adminId)
+                event.dataTransfer.setData('type',event.target.classList.contains('ticket')?'ticket':'admin')
+
+            }
+        })
+
+        function allowDrop(event){
+            event.preventDefault();
+        }
+        document.getElementById('admins').ondrop = async(event)=>{
+            event.preventDefault()
+            const ticketId = event.dataTransfer.getData('id')
+            const adminId = prompt('Enter Admin ID to assign this ticket:')
+
+            if(adminId){
+                await fetch('/superadmin/assign',{
+                    method:'POST',
+                    headers:{'Content-Type' : 'application/json'},
+                    body : JSON.stringify({ticketId,adminId})
+                })
+                alert('Admin assigned!')
+                location.reload()
+            }
+        }
+    </script>
+    </body>
+</html>

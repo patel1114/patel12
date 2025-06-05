@@ -1,0 +1,141 @@
+/* styles.css */
+/* General styles for the page */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* Main container styles */
+.big-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Centered container for header and description */
+.container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Header styles */
+.header-container h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    background-color: #097c65;
+}
+
+/* Description text styles */
+.description-container p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:20px;
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.8;
+    margin: 0 auto;
+    /* margin-bottom:0%; */
+    max-width: 800px;
+}
+
+.logo-container {
+    flex-shrink: 0;
+}
+
+.text-container{
+    /* margin-top: 10%; */
+    /* padding-top: 100%; */
+    flex-grow: 1;
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.8;
+}
+
+.logo {
+    height: 100px; /* Adjust height as needed */
+    width: auto;
+    /* margin-right: 15px; */
+    /* left: 100%; */
+    margin-right: 100%;
+}
+
+/* Welcome container styles */
+.welcome-container h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Form section container */
+.form-section {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between; 
+    gap: 20px; 
+}
+/* General form box styles */
+.form-box {
+    flex: 1; 
+    background-color: #f9f9f9;
+    border: 1px solid #afdfeb;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* New Ticket Form Styles */
+.new-ticket-form {
+    background-color: #f9f9f9; 
+
+}
+
+/* Button Styles */
+button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #050505;
+    background-color: #d1deec; /* Default blue color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+}
+
+/* Hover Effect for Buttons */
+button:hover {
+    background-color: #0056b3; 
+    transform: scale(1.05); 
+}
+
+/* Focus Effect for Buttons */
+button:focus {
+    outline: 2px solid #0056b3;
+    outline-offset: 2px;
+}
+
+/* Check Ticket Status Form Styles */
+.check-ticket-form {
+    background-color: #e9f7ef;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .form-section {
+        flex-direction: column; 
+    }
+
+    .form-box {
+        width: 100%; 
+    }
+}
+
+    

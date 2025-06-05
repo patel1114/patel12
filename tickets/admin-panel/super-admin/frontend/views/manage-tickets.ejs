@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Tickets</title>
+    <style>
+        .ticket-list {
+            margin: 20px;
+        }
+        .ticket-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .ticket-checkbox {
+            margin-right: 10px;
+        }
+        .ticket-info {
+            flex-grow: 1;
+        }
+        .admin-list {
+            margin: 20px;
+        }
+        .admin-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .assign-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .assign-button:hover {
+            background-color: #45a049;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            width: 50%;
+        }
+        .close {
+            float: right;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket-list">
+        <h2>Unassigned Tickets</h2>
+        <div>
+            <label>
+                <input type="checkbox" id="selectAllTickets"> Select All Tickets
+            </label>
+        </div>
+        <% tickets.forEach(function(ticket) { %>
+            <div class="ticket-item">
+                <input type="checkbox" class="ticket-checkbox" value="<%= ticket.id %>">
+                <div class="ticket-info">
+                    <strong>Ticket #<%= ticket.id %></strong>
+                    <p><%= ticket.subject %></p>
+                        </div>
+            </div>
+        <% }); %>
+        </div>
+
+    <div class="admin-list">
+        <h2>Support Agents</h2>
+        <% admins.forEach(function(admin) { %>
+            <div class="admin-item">
+                <h3><%= admin.name %></h3>
+                <button class="assign-button" data-admin-id="<%= admin.id %>" data-admin-name="<%= admin.name %>">
+                    Assign Selected Tickets
+                </button>
+                        </div>
+                    <% }); %>
+            </div>
+
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Confirm Assignment</h2>
+            <p>Are you sure you want to assign the selected tickets to <span id="adminName"></span>?</p>
+            <button id="confirmAssign">Confirm</button>
+    </div>
+</div>
+
+    <script>
+        console.log('Script starting...');
+
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Get all necessary elements
+            const selectAllCheckbox = document.getElementById('selectAllTickets');
+            const ticketList = document.querySelector('.ticket-list');
+            const adminList = document.querySelector('.admin-list');
+            const modal = document.getElementById('confirmationModal');
+            const closeBtn = document.querySelector('.close');
+            const confirmBtn = document.getElementById('confirmAssign');
+            let currentAdminId = null;
+            let currentAdminName = null;
+
+            console.log('Found elements:', {
+                selectAllCheckbox: !!selectAllCheckbox,
+                ticketList: !!ticketList,
+                adminList: !!adminList,
+                modal: !!modal,
+                closeBtn: !!closeBtn,
+                confirmBtn: !!confirmBtn
+            });
+
+            // Function to update the "Select All" checkbox state
+            function updateSelectAllState() {
+                const ticketCheckboxes = document.querySelectorAll('.ticket-checkbox');
+                const allChecked = Array.from(ticketCheckboxes).every(cb => cb.checked);
+                selectAllCheckbox.checked = allChecked;
+                console.log('Updated select all state:', allChecked);
+            }
+
+            // Function to get selected tickets
+            function getSelectedTickets() {
+                const ticketCheckboxes = document.querySelectorAll('.ticket-checkbox');
+                return Array.from(ticketCheckboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.value);
+            }
+
+            // Use event delegation for ticket list
+            ticketList.addEventListener('change', function(event) {
+                const target = event.target;
+                
+                if (target.id === 'selectAllTickets') {
+                    console.log('Select all checkbox changed:', target.checked);
+                    const ticketCheckboxes = document.querySelectorAll('.ticket-checkbox');
+                    ticketCheckboxes.forEach(cb => {
+                        cb.checked = target.checked;
+                        console.log('Setting checkbox', cb.value, 'to', target.checked);
+                    });
+                } else if (target.classList.contains('ticket-checkbox')) {
+                    console.log('Individual checkbox changed:', target.value, target.checked);
+                    updateSelectAllState();
+                }
+            });
+
+            // Use event delegation for admin list
+            adminList.addEventListener('click', function(event) {
+                const target = event.target;
+                
+                if (target.classList.contains('assign-button')) {
+                    const selectedTickets = getSelectedTickets();
+                    console.log('Selected tickets:', selectedTickets);
+                    
+                    if (selectedTickets.length === 0) {
+                        alert('Please select at least one ticket');
+                        return;
+                    }
+
+                    currentAdminId = target.dataset.adminId;
+                    currentAdminName = target.dataset.adminName;
+                    
+                    document.getElementById('adminName').textContent = currentAdminName;
+                    modal.style.display = 'block';
+                }
+            });
+
+            // Add event listener for closing the modal
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+
+            // Add event listener for confirming the assignment
+            confirmBtn.addEventListener('click', function() {
+                const selectedTickets = getSelectedTickets();
+                console.log('Assigning tickets:', selectedTickets, 'to admin:', currentAdminId);
+
+                fetch('/assign/tickets', {
+                    method: 'POST',
+                        headers: { 
+                        'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ 
+                        ticketIds: selectedTickets,
+                        adminId: currentAdminId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Assignment response:', data);
+                    if (data.success) {
+                        alert('Tickets assigned successfully!');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while assigning tickets');
+                });
+
+                modal.style.display = 'none';
+            });
+
+            // Add event listener for closing the modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            console.log('Event listeners attached');
+        });
+</script>
+</body>
+</html> 

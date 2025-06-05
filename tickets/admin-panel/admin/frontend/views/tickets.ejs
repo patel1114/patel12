@@ -1,0 +1,194 @@
+<% layout('layout') %>
+
+<div class="tickets-container">
+    <div class="tickets-header">
+        <h1>My Tickets</h1>
+        <p class="subtitle">View and manage your assigned tickets</p>
+    </div>
+
+    <div class="tickets-section">
+        <div class="table-container">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Subject</th>
+                        <th>Status</th>
+                        <th>Location</th>
+                        <th>Help Topic</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% tickets.forEach(ticket => { %>
+                        <tr>
+                            <td><%= ticket.id %></td>
+                            <td><%= ticket.subject %></td>
+                            <td><%= ticket.status %></td>
+                            <td><%= ticket.location %></td>
+                            <td><%= ticket.helpTopic %></td>
+                            <td>
+                                <a href="/admin/tickets/<%= ticket.id %>" class="action-button view">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .tickets-container {
+        padding: 20px;
+        background: #f8f9fa;
+    }
+
+    .tickets-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .tickets-header h1 {
+        color: #1f6a72;
+        margin-bottom: 10px;
+        font-size: 2.5em;
+        font-weight: 700;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .subtitle {
+        color: #666;
+        font-size: 1.2em;
+        font-weight: 500;
+    }
+
+    .tickets-section {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .tickets-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+
+    .table-container {
+        overflow-x: auto;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 15px;
+        overflow: hidden;
+        background: white;
+    }
+
+    .styled-table thead th {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        color: white;
+        font-weight: 600;
+        padding: 18px 20px;
+        text-align: left;
+        font-size: 1.1em;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        position: relative;
+    }
+
+    .styled-table thead th:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 25%;
+        height: 50%;
+        width: 1px;
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .styled-table tbody td {
+        padding: 18px 20px;
+        border-bottom: 1px solid #e9ecef;
+        color: #2c3e50;
+        font-weight: 500;
+        background: white;
+        transition: all 0.3s ease;
+    }
+
+    .styled-table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .styled-table tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    .styled-table tbody tr:hover {
+        background-color: #f1f5f9;
+        transform: scale(1.01);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .styled-table tbody tr:hover td {
+        color: #1f6a72;
+    }
+
+    .action-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.9em;
+    }
+
+    .action-button.view {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+    }
+
+    .action-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .action-button i {
+        font-size: 1.1em;
+    }
+
+    @media (max-width: 768px) {
+        .tickets-container {
+            padding: 15px;
+        }
+
+        .tickets-section {
+            padding: 20px;
+        }
+
+        .styled-table thead th,
+        .styled-table tbody td {
+            padding: 12px 15px;
+            font-size: 0.9em;
+        }
+
+        .action-button {
+            padding: 8px 15px;
+            font-size: 0.8em;
+        }
+    }
+</style>

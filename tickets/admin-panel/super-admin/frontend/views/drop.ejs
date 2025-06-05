@@ -1,0 +1,242 @@
+<div class="assign-tickets-container">
+    <button class="back-btn" onclick="goBack()">⬅ Back</button>
+    <h2>Assign Tickets</h2>
+
+    <div class="assign-grid">
+        <!-- Tickets Section -->
+        <div class="tickets-panel">
+            <h3>🎟 Unassigned Tickets</h3>
+            <div class="tickets-list" id="tickets">
+                <% if (tickets.length === 0) { %>
+                    <p class="empty-msg">No unassigned tickets.</p>
+                <% } else { %>
+                    <% tickets.forEach(ticket => { %>
+                        <div class="ticket-card" data-ticket-id="<%= ticket.ticketId %>" draggable="true">
+                            <strong>#<%= ticket.ticketId %>:</strong> <%= ticket.subject %>
+                            <span class="location">📍 <%= ticket.location %></span>
+                        </div>
+                    <% }); %>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Admins Section -->
+        <div class="admins-panel">
+            <h3>👨‍💼 Support Agent</h3>
+            <div class="admins-list" id="admins">
+                <% if (admins.length === 0) { %>
+                    <p class="empty-msg">No Support Agent available.</p>
+                <% } else { %>
+                    <% admins.forEach(admin => { %>
+                        <div class="admin-card" data-admin-id="<%= admin.id %>">
+                            <strong>👤 <%= admin.username %></strong>
+                            <span class="location">📍 <%= admin.location %></span>
+                            <div class="drop-area">Drop Tickets Here</div>
+                        </div>
+                    <% }); %>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Page Container */
+    .assign-tickets-container {
+        padding: 20px;
+        background: #f4f4f4;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Back Button */
+    .back-btn {
+        padding: 8px 12px;
+        background: #333;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 15px;
+        transition: 0.3s;
+    }
+
+    .back-btn:hover {
+        background: #555;
+    }
+
+    /* Grid Layout */
+    .assign-grid {
+        display: flex;
+        gap: 20px;
+    }
+
+    /* Tickets Panel */
+    .tickets-panel, .admins-panel {
+        flex: 1;
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        min-height: 300px;
+    }
+
+    /* Titles */
+    .tickets-panel h3, .admins-panel h3 {
+        text-align: center;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #ddd;
+    }
+
+    /* Ticket Cards */
+    .tickets-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-top: 10px;
+    }
+
+    .ticket-card {
+        background: #ffeb3b;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: grab;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .ticket-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+    }
+
+    .ticket-card .location {
+        display: block;
+        font-size: 0.9em;
+        color: #555;
+        margin-top: 5px;
+    }
+
+    /* Admin Cards */
+    .admins-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding-top: 10px;
+    }
+
+    .admin-card {
+        background: #4caf50;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: 0.3s;
+        position: relative;
+    }
+
+    .admin-card:hover {
+        background: #388e3c;
+    }
+
+    .admin-card .location {
+        display: block;
+        font-size: 0.9em;
+        color: #e8f5e9;
+        margin-top: 5px;
+    }
+
+    /* Drop Area */
+    .drop-area {
+        margin-top: 10px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        text-align: center;
+        border-radius: 5px;
+        font-size: 0.9em;
+        border: 2px dashed white;
+        pointer-events: all; /* ✅ Fix: Allow dragging */
+
+    }
+
+    .drop-area.dragover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Empty Message */
+    .empty-msg {
+        text-align: center;
+        color: #999;
+        font-style: italic;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tickets = document.querySelectorAll(".ticket-card");
+        const dropAreas = document.querySelectorAll(".admin-card .drop-area");
+    
+        tickets.forEach(ticket => {
+            ticket.addEventListener("dragstart", function (e) {
+                console.log('Dragging a ticket ID:',this.dataset.ticketId);
+                e.dataTransfer.setData("ticketId", this.dataset.ticketId);
+                e.dataTransfer.effectAllowed = "move"; // ✅ Allows moving the element
+                this.style.opacity = "0.5";
+            });
+    
+            ticket.addEventListener("dragend", function () {
+                this.style.opacity = "1";
+            });
+        });
+    
+        dropAreas.forEach(dropArea => {
+            dropArea.addEventListener("dragover", function (e) {
+                e.preventDefault(); // ✅ Required to allow dropping
+                e.dataTransfer.dropEffect = "move"; // ✅ Fixes block cursor (🚫)
+                this.classList.add("dragover");
+            });
+    
+            dropArea.addEventListener("dragleave", function () {
+                this.classList.remove("dragover");
+            });
+    
+            dropArea.addEventListener("drop", async function (e) {
+                e.preventDefault();
+                this.classList.remove("dragover");
+    
+                let ticketId = e.dataTransfer.getData("ticketId");
+                let adminCard = this.closest(".admin-card");
+                let adminId = adminCard.dataset.adminId;
+                let ticketElement = document.querySelector(`[data-ticket-id="${ticketId}"]`);
+    
+                if (!ticketElement) return;
+    
+                try {
+                    let response = await fetch("/assign/tickets", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ ticketId: ticketId, adminId: Number(adminId) }),
+                    });
+    
+                    if (response.ok) {
+                        ticketElement.remove();
+                        alert("✅ Ticket Assigned Successfully!");
+                    } else {
+                        alert("❌ Failed to Assign Ticket.");
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("⚠ Error Assigning Ticket.");
+                }
+            });
+        });
+    });
+    
+
+    function goBack() {
+        document.getElementById('content-area').innerHTML =` 
+            <h2>Welcome to Superadmin Dashboard</h2>
+            <p>Select an option from the sidebar.</p>`
+
+    }
+</script>

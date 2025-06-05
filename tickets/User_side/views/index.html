@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atul Limited - Support Ticket System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1f6a72;
+            --secondary-color: #2c3e50;
+            --accent-color: #3498db;
+            --success-color: #2ecc71;
+            --warning-color: #f1c40f;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+            --light-text: #7f8c8d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        .header {
+            background: #1f6a72;
+            color: white;
+            padding: 0.8rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+            margin-bottom: 0.2rem;
+        }
+
+        .header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .header-title {
+            flex: 1;
+            text-align: center;
+        }
+
+        .back-to-login {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-login:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .main-container {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .description-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .description-card p {
+            color: var(--dark-text);
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-card i {
+            font-size: 2.5em;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .action-card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5em;
+        }
+
+        .action-card p {
+            color: var(--light-text);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .action-card button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-card button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            background: #1f6a72;
+            color: white;
+            text-align: center;
+            padding: 0.6rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            font-size: 0.85em;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .action-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .back-to-login {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-title">
+            <h1>Atul Limited</h1>
+            <p>Support Ticket System</p>
+        </div>
+        <a href="/login" class="back-to-login">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </header>
+
+    <main class="main-container">
+        <div class="description-card">
+            <p>In order to best service you, we utilize a support ticket system. Every query is assigned a 'Ticket Number' that we track carefully. We check the tickets we receive and respond. We check who answers your query and find out if you are satisfied with the result. All we need is a valid Email address. This will be used only for queries.</p>
+        </div>
+
+        <div class="action-cards">
+            <div class="action-card" onclick="window.location.href='/new-ticket'">
+                <i class="fas fa-ticket-alt"></i>
+                <h3>Open A New Ticket</h3>
+                <p>Please provide as many details as possible so we can best assist you</p>
+                <button>Open New Ticket</button>
+            </div>
+
+            <div class="action-card" onclick="window.location.href='/check-status'">
+                <i class="fas fa-search"></i>
+                <h3>Check Ticket Status</h3>
+                    <p>We provide archives and history of all support requests complete with responses</p>
+                <button>Check Status</button>
+            </div>
+    </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Atul Limited. All rights reserved.</p>
+    </footer>
+</body>
+</html>

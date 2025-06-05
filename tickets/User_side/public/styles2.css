@@ -1,0 +1,127 @@
+/* Styles for the container */
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px #ccc;
+    max-width: 800px;
+    margin: auto;
+}
+
+/* Header container with heading and close button */
+.header-container {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    height: 50px; /* Adjust height as needed */
+    width: auto;
+    margin-right: 15px;
+}
+
+.header-container h2 {
+    background-color: #097c65;
+    color: #000605;
+    text-align:center;
+    width: 100%; /* Ensure the heading takes up the full width */
+}
+
+/* Close button styles */
+.close-btn {
+    position:relative;
+    top: 0;
+    right: 20px;
+    background: rgb(242, 172, 172);
+    border: darkred;
+    font-size: 30px;
+    color: #fb0a0a;
+    cursor: pointer;
+    padding: 10;
+    margin: 10;
+}
+
+/* Form row styles */
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+/* Form group styles */
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+label span {
+    color: red;
+}
+
+input, select, textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+textarea {
+    height: 100px;
+}
+
+/* Attachment & CAPTCHA section styles */
+.attachment-captcha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.attachment a {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-left: 10px;
+}
+
+.file-types {
+    font-size: 12px;
+    color: gray;
+}
+
+.captcha-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Submit & Cancel Buttons */
+.buttons {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.submit-btn {
+    background-color: green;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background-color: red;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}

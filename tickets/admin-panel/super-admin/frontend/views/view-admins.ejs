@@ -1,0 +1,314 @@
+<div class="page-container">
+    <div class="header-h1">
+        <button class="back-btn" onclick="goBack()">⬅ Back</button>
+        <h2>Support Agent List</h2>
+        <button class="manage-btn" onclick="loadManageAdmins()">➕ Manage Support Agents</button>
+    </div>
+
+    <!-- Location Filter -->
+
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody id="adminTableBody">
+            <% if (admins.length === 0) { %>
+                <tr><td colspan="3" class="no-data">No support agent available.</td></tr>
+            <% } else { %>
+                <% admins.forEach(admin => { %>
+                    <tr class="admin-row" data-location="<%= admin.location %>">
+                        <td><%= admin.id %></td>
+                        <td><%= admin.username %></td>
+                        <td><%= admin.location %></td>
+                    </tr>
+                <% }); %>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<footer class="footer">
+    <p>&copy; 2024 Atul Limited. All rights reserved.</p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the filter
+        const locationFilter = document.getElementById('locationFilter');
+        if (locationFilter) {
+            locationFilter.addEventListener('change', filterByLocation);
+            console.log('Location filter initialized');
+        } else {
+            console.error('Location filter element not found');
+        }
+    });
+
+    function goBack() {
+        window.history.back();
+    }
+
+    // Function to filter admins by location
+    function filterByLocation() {
+        try {
+            console.log('Filtering started');
+            const locationFilter = document.getElementById('locationFilter');
+            const selectedLocation = locationFilter.value;
+            console.log('Selected location:', selectedLocation);
+            
+            const adminRows = document.querySelectorAll('.admin-row');
+            console.log('Found admin rows:', adminRows.length);
+            
+            let visibleCount = 0;
+            adminRows.forEach(row => {
+                const rowLocation = row.getAttribute('data-location');
+                console.log('Row location:', rowLocation);
+                
+                if (selectedLocation === 'all' || rowLocation === selectedLocation) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Check if any rows are visible
+            const tbody = document.getElementById('adminTableBody');
+            const existingNoData = tbody.querySelector('.no-data');
+            
+            if (visibleCount === 0) {
+                if (!existingNoData) {
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = '<td colspan="3" class="no-data">No support agents available for this location.</td>';
+                    tbody.appendChild(newRow);
+                }
+            } else if (existingNoData) {
+                existingNoData.remove();
+            }
+            
+            console.log('Filtering completed. Visible rows:', visibleCount);
+        } catch (error) {
+            console.error('Error in filterByLocation:', error);
+        }
+    }
+
+    async function loadManageAdmins() {
+        try {
+            let response = await fetch('/superadmin/manage-admins');
+            if (response.ok) {
+                let content = await response.text();
+                document.querySelector('.page-container').innerHTML = content;
+            } else {
+                document.querySelector('.page-container').innerHTML = "<p>Error loading Manage Admins.</p>";
+            }
+        } catch (error) {
+            document.querySelector('.page-container').innerHTML = "<p>Error loading page.</p>";
+        }
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('message')) {
+        alert(urlParams.get('message'));
+        window.location.href = "/superadmin/admins";
+    }
+    if (urlParams.has('error')) {
+        alert(urlParams.get('error'));
+        window.location.href = "/superadmin/admins";
+    }
+</script>
+
+<style>
+    /* Page Container */
+    .page-container {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        margin-bottom: 4rem;
+    }
+
+    /* Header */
+    .header-h1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .header-h1 h2 {
+        color: #2c3e50;
+        font-size: 1.6em;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    /* Filter Container */
+    .filter-container {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .filter-container label {
+        margin-right: 10px;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .location-filter {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        background-color: white;
+        font-size: 14px;
+        min-width: 200px;
+        cursor: pointer;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .location-filter:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    /* Buttons */
+    .back-btn, .manage-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.9em;
+    }
+
+    .back-btn {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        color: white;
+    }
+    
+    .manage-btn {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+    }
+
+    .back-btn:hover, .manage-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Table */
+    .styled-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 15px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .styled-table thead th {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        color: white;
+        font-weight: 600;
+        padding: 18px 20px;
+        text-align: left;
+        font-size: 1.1em;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        position: relative;
+    }
+
+    .styled-table thead th:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 25%;
+        height: 50%;
+        width: 1px;
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .styled-table tbody td {
+        padding: 18px 20px;
+        border-bottom: 1px solid #e9ecef;
+        color: #2c3e50;
+        font-weight: 500;
+        background: white;
+        transition: all 0.3s ease;
+    }
+
+    .styled-table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .styled-table tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    .styled-table tbody tr:hover {
+        background-color: #f1f5f9;
+        transform: scale(1.01);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .styled-table tbody tr:hover td {
+        color: #1f6a72;
+    }
+
+    .no-data {
+        text-align: center;
+        font-size: 1.1em;
+        font-weight: 500;
+        color: #666;
+        padding: 20px;
+    }
+
+    /* Footer */
+    .footer {
+        background: linear-gradient(135deg, #1f6a72, #1f6a72);
+        color: white;
+        text-align: center;
+        padding: 1rem;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 30px;
+        z-index: 1000;
+    }
+
+    @media (max-width: 768px) {
+        .page-container {
+            padding: 15px;
+        }
+
+        .header-h1 {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .styled-table thead th,
+        .styled-table tbody td {
+            padding: 12px 15px;
+            font-size: 0.9em;
+        }
+
+        .back-btn, .manage-btn {
+            width: 100%;
+            margin: 5px 0;
+        }
+    }
+</style>

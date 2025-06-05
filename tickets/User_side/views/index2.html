@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raise New Ticket - Atul Limited</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1f6a72;
+            --secondary-color: #2c3e50;
+            --accent-color: #3498db;
+            --success-color: #2ecc71;
+            --warning-color: #f1c40f;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+            --light-text: #7f8c8d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        .header {
+            background: #1f6a72;
+            color: white;
+            padding: 0.8rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+            margin-bottom: 0.2rem;
+        }
+
+        .header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .main-container {
+            flex: 1;
+            padding: 0.8rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .form-card h2 {
+            color: var(--secondary-color);
+            margin-bottom: 0.8rem;
+            text-align: center;
+            font-size: 1.3em;
+        }
+
+        .form-group {
+            margin-bottom: 0.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--dark-text);
+            margin-bottom: 0.2rem;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .form-group label.required::after {
+            content: " *";
+            color: var(--danger-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.85em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(31, 106, 114, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.6rem;
+            background: #093864;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.4rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-home {
+            display: inline-block;
+            padding: 0.5rem 0.8rem;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            color: #1976d2;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            font-size: 0.85em;
+            border: 1px solid #90caf9;
+        }
+
+        .back-home:hover {
+            background: linear-gradient(135deg, #bbdefb, #90caf9);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+            background: #1f6a72;
+            color: white;
+            text-align: center;
+            padding: 0.6rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            font-size: 0.85em;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-card {
+                padding: 1.5rem;
+            }
+        }
+
+        .form-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-header h2 {
+            margin: 0;
+            text-align: center;
+            flex: 1;
+        }
+
+        .back-home {
+            position: absolute;
+            left: 0;
+        }
+
+        .captcha-box {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .captcha-box img {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 0.3rem;
+            height: 40px;
+        }
+
+        .captcha-box input {
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .captcha-box button {
+            background: var(--light-bg);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .captcha-box button:hover {
+            background: #e9ecef;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <h1>Atul Limited</h1>
+        <p>Support Ticket System</p>
+    </header>
+
+    <main class="main-container">
+        <div class="form-card">
+            <div class="form-header">
+                <a href="/" class="back-home">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+                <h2><i class="fas fa-ticket-alt"></i> Raise New Support Ticket</h2>
+        </div>
+
+            <form id="ticketForm" action="/create-ticket" method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                        <label for="fullName" class="required">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                        <label for="type" class="required">Type of Issue</label>
+                        <select id="type" name="type" required>
+                            <option value="">Select Type</option>
+                        <option value="Technical Issue">Technical Issue</option>
+                        <option value="Software Bug">Software Bug</option>
+                        <option value="Hardware Issue">Hardware Issue</option>
+                        <option value="Network Problem">Network Problem</option>
+                        <option value="Access Request">Access Request</option>
+                        <option value="Password Reset">Password Reset</option>
+                        <option value="Feature Request">Feature Request</option>
+                        <option value="General Inquiry">General Inquiry</option>
+                      </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                        <label for="location" class="required">Location</label>
+                        <select id="location" name="location" required>
+                        <option value="">Select One</option>
+                        <option value="Head Office (HO)">Head Office (HO)</option>
+                        <option value="Branch Office">Branch Office</option>
+                        <option value="Factory">Factory</option>
+                        <option value="Warehouse">Warehouse</option>
+                        <option value="Remote Work">Remote Work</option>
+                        <option value="Data Center">Data Center</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                        <label for="telephone" class="required">Telephone</label>
+                        <input type="tel" id="telephone" name="telephone" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                        <label for="helpTopic" class="required">Help Topic</label>
+                        <select id="helpTopic" name="helpTopic" required>
+                            <option value="">Select Help Topic</option>
+                        <option value="Email Not Working">Email Not Working</option>
+                        <option value="System Login Issue">System Login Issue</option>
+                        <option value="VPN/Remote Access Problem">VPN/Remote Access Problem</option>
+                        <option value="Hardware Repair Request">Hardware Repair Request</option>
+                        <option value="Software Installation Request">Software Installation Request</option>
+                        <option value="Data Access Issue">Data Access Issue</option>
+                        <option value="Billing & Payments Issue">Billing & Payments Issue</option>
+                            <option value="Leave & Attendance Query">Leave & Attendance Query</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                    <label for="subject" class="required">Subject</label>
+                    <input type="text" id="subject" name="subject" required>
+            </div>
+
+            <div class="form-group">
+                    <label for="message" class="required">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+            </div>
+
+                <div class="form-group">
+                    <label for="attachment">Attachment (Optional)</label>
+                    <input type="file" id="attachment" name="attachment" accept=".png,.jpg,.jpeg">
+                    <small style="display: block; color: var(--light-text); font-size: 0.75em; margin-top: 0.3rem;">
+                        <i class="fas fa-info-circle"></i> Only .png and .jpg files are allowed (max size: 2MB)
+                    </small>
+                </div>
+            
+                <div class="form-group">
+                    <label for="captcha" class="required">Type the characters you see in the picture below</label>
+                    <div class="captcha-box">
+                        <img id="captchaImage" src="/captcha" alt="CAPTCHA">
+                        <input type="text" id="captcha" name="captcha" required placeholder="Enter CAPTCHA">
+                        <button type="button" onclick="refreshCaptcha()" title="Refresh CAPTCHA">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <small style="display: block; color: var(--light-text); font-size: 0.75em; margin-top: 0.3rem;">
+                        <i class="fas fa-info-circle"></i> Letters are case-sensitive
+                    </small>
+            </div>
+            
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Submit Ticket
+                </button>
+        </form>
+    </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Atul Limited. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // Phone number validation
+        document.getElementById('telephone').addEventListener('input', function(e) {
+            // Only allow numbers and limit to 10 digits
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 10) {
+                value = value.slice(0, 10);
+            }
+            e.target.value = value;
+        });
+
+        // File input validation
+        const fileInput = document.getElementById('attachment');
+        fileInput.addEventListener('change', function(e) {
+            const file = this.files[0];
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+            if (file) {
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Invalid file type! Only PNG and JPG files are allowed.');
+                    this.value = '';
+                } else if (file.size > maxSize) {
+                    alert('File size exceeds 2MB. Please select a smaller file.');
+                    this.value = '';
+                } else {
+                    const label = this.previousElementSibling;
+                    label.textContent = `Attachment: ${file.name}`;
+                }
+            }
+        });
+
+        // CAPTCHA refresh function
+        function refreshCaptcha() {
+            document.getElementById('captchaImage').src = '/captcha?' + Date.now();
+        }
+    </script>
+</body>
+</html>

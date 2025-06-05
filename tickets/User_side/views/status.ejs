@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Status - Atul Limited</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1f6a72;
+            --secondary-color: #2c3e50;
+            --accent-color: #3498db;
+            --success-color: #2ecc71;
+            --warning-color: #f1c40f;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+            --light-text: #7f8c8d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        .header {
+            background: #1f6a72;
+            color: white;
+            padding: 0.8rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+            margin-bottom: 0.2rem;
+        }
+
+        .header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .main-container {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .status-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .status-form {
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--dark-text);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(31, 106, 114, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            text-align: center;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+
+        .user-name {
+            text-align: center;
+            font-size: 1.5em;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Table Styles */
+        .styled-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 15px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .styled-table thead th {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            font-weight: 600;
+            padding: 18px 20px;
+            text-align: left;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .styled-table thead th:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 25%;
+            height: 50%;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .styled-table tbody td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e9ecef;
+            color: #2c3e50;
+            font-weight: 500;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .styled-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .styled-table tbody tr:hover {
+            background-color: #f1f5f9;
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .styled-table tbody tr:hover td {
+            color: #1f6a72;
+        }
+
+        .no-data {
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #666;
+            padding: 20px;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        .open {
+            background: #28a745;
+        }
+
+        .in-progress {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .closed {
+            background: #dc3545;
+        }
+
+        .back-home {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9em;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .footer {
+            background: #1f6a72;
+            color: white;
+            text-align: center;
+            padding: 0.6rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            font-size: 0.85em;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 15px;
+            }
+
+            .styled-table thead th,
+            .styled-table tbody td {
+                padding: 12px 15px;
+                font-size: 0.9em;
+            }
+
+            .back-home {
+                width: 100%;
+                margin: 5px 0;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Atul Limited</h1>
+        <p>Support Ticket System</p>
+    </header>
+
+    <main class="main-container">
+        <div class="status-card">
+            <h2 style="color: var(--secondary-color); margin-bottom: 1.5rem; text-align: center;">
+                <i class="fas fa-ticket-alt"></i> Your Tickets
+            </h2>
+
+            <% if (error) { %>
+                <p class="error-message"><%= error %></p>
+            <% } %>
+
+            <% if (tickets && tickets.length > 0) { %>
+                <div class="user-name">
+                    <i class="fas fa-user"></i> <%= tickets[0].fullName %>
+                </div>
+                
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Ticket ID</th>
+                            <th>Subject</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% tickets.forEach(ticket => { %>
+                            <tr>
+                                <td><%= ticket.ticketId %></td>
+                                <td><%= ticket.subject %></td>
+                                <td><%= ticket.location %></td>
+                                <td>
+                                    <span class="status-badge <%= ticket.status.toLowerCase().replace(' ', '-') %>">
+                                        <%= ticket.status %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="/download/<%= ticket.ticketId %>" class="download-btn" style="padding: 5px 10px; font-size: 0.9em;">
+                                        <i class="fas fa-download"></i> Download
+                                    </a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <div style="text-align: center; padding: 2rem;">
+                    <i class="fas fa-info-circle" style="font-size: 3em; color: var(--light-text); margin-bottom: 1rem;"></i>
+                    <p style="color: var(--light-text); font-size: 1.2em;">No tickets found.</p>
+                </div>
+            <% } %>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="/index.html" class="back-home">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Atul Limited. All rights reserved.</p>
+    </footer>
+</body>
+</html>

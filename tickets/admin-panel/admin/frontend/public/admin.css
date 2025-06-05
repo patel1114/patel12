@@ -1,0 +1,158 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Admin container */
+.admin-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar styles */
+.sidebar {
+    width: 250px;
+    background: #333;
+    color: white;
+    padding: 20px;
+    height: 100vh;
+}
+
+.sidebar h2 {
+    text-align: center;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 20px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background: #575757;
+}
+
+/* Main content */
+.content {
+    flex: 1;
+    padding: 20px;
+    background: white;
+}
+
+/* Stats box */
+.stats {
+    display: flex;
+    gap: 20px;
+}
+
+.stats-box {
+    background: #007bff;
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    flex: 1;
+}
+
+.stats-box h3 {
+    margin: 0;
+}
+
+.stats-box p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background: #007bff;
+    color: white;
+}
+
+/* Ticket details page */
+form {
+    margin-top: 20px;
+}
+
+form label {
+    font-weight: bold;
+}
+
+form select {
+    padding: 5px;
+    margin-top: 5px;
+}
+
+button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #218838;
+}
+
+/* Login page */
+.login-container {
+    width: 300px;
+    margin: 100px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.login-container button {
+    width: 100%;
+}
+
+/* Error messages */
+.error {
+    color: red;
+    font-weight: bold;
+}

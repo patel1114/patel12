@@ -1,0 +1,423 @@
+<% layout('layout') %>
+
+<div class="ticket-details-container">
+    <div class="ticket-header">
+        <h1>Ticket Details</h1>
+        <div class="ticket-actions">
+            <a href="/admin/tickets" class="btn btn-back">
+                <i class="fas fa-arrow-left"></i> Back to Tickets
+            </a>
+        </div>
+    </div>
+
+    <div class="ticket-content">
+        <div class="ticket-info-card">
+            <div class="info-section">
+                <h2><i class="fas fa-ticket-alt"></i> Ticket Information</h2>
+                <div class="info-grid">
+                    <div class="info-item card">
+                        <div class="card-icon">
+                            <i class="fas fa-heading"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-label">Subject</span>
+                            <span class="card-value"><%= ticket.subject %></span>
+                        </div>
+                    </div>
+                    <div class="info-item card">
+                        <div class="card-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-label">Location</span>
+                            <span class="card-value"><%= ticket.location %></span>
+                        </div>
+                    </div>
+                    <div class="info-item card">
+                        <div class="card-icon">
+                            <i class="fas fa-tag"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-label">Help Topic</span>
+                            <span class="card-value"><%= ticket.helpTopic %></span>
+                        </div>
+                    </div>
+                    <div class="info-item card">
+                        <div class="card-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-label">Status</span>
+                            <span class="card-value status-badge status-<%= ticket.status.toLowerCase().replace(' ', '-') %>">
+                                <%= ticket.status %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-update-section">
+                <h2><i class="fas fa-sync-alt"></i> Update Status</h2>
+                <form action="/admin/tickets/update/<%= ticket.id %>" method="POST" class="status-form" id="statusForm">
+                    <div class="form-group">
+                        <label for="status">Select New Status:</label>
+                        <div class="select-wrapper">
+                            <select name="status" id="status" class="form-control">
+                                <option value="Open" <%= ticket.status === 'Open' ? 'selected' : '' %>>Open</option>
+                                <option value="In Progress" <%= ticket.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+                                <option value="Closed" <%= ticket.status === 'Closed' ? 'selected' : '' %>>Closed</option>
+                            </select>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-update">
+                        <i class="fas fa-save"></i> Update Status
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .ticket-details-container {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .ticket-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .ticket-header h1 {
+        color: #2c3e50;
+        font-size: 2em;
+        margin: 0;
+    }
+
+    .ticket-content {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        padding: 30px;
+    }
+
+    .ticket-info-card {
+        display: grid;
+        gap: 30px;
+    }
+
+    .info-section h2, .status-update-section h2 {
+        color: #2c3e50;
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .info-item.card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .info-item.card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+    }
+
+    .info-item:nth-child(1) .card-icon {
+        background: linear-gradient(135deg, #1f6a72, #2c3e50);
+    }
+
+    .info-item:nth-child(1)::before {
+        background: linear-gradient(90deg, #1f6a72, #2c3e50);
+    }
+
+    .info-item:nth-child(2) .card-icon {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+    }
+
+    .info-item:nth-child(2)::before {
+        background: linear-gradient(90deg, #3498db, #2980b9);
+    }
+
+    .info-item:nth-child(3) .card-icon {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+    }
+
+    .info-item:nth-child(3)::before {
+        background: linear-gradient(90deg, #e74c3c, #c0392b);
+    }
+
+    .info-item:nth-child(4) .card-icon {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+    }
+
+    .info-item:nth-child(4)::before {
+        background: linear-gradient(90deg, #2ecc71, #27ae60);
+    }
+
+    .info-item.card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5em;
+    }
+
+    .card-icon i {
+        color: white;
+    }
+
+    .card-content {
+        flex: 1;
+    }
+
+    .card-label {
+        display: block;
+        color: #7f8c8d;
+        font-size: 0.9em;
+        margin-bottom: 5px;
+    }
+
+    .card-value {
+        display: block;
+        color: #2c3e50;
+        font-size: 1.2em;
+        font-weight: 600;
+    }
+
+    .status-badge {
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .status-open {
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .status-in-progress {
+        background: #fff3e0;
+        color: #f57c00;
+    }
+
+    .status-closed {
+        background: #e8f5e9;
+        color: #388e3c;
+    }
+
+    .status-form {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #2c3e50;
+        font-weight: 500;
+    }
+
+    .select-wrapper {
+        position: relative;
+    }
+
+    .select-wrapper select {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: white;
+        appearance: none;
+        cursor: pointer;
+    }
+
+    .select-wrapper i {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7f8c8d;
+        pointer-events: none;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .btn-back {
+        background: #f8f9fa;
+        color: #2c3e50;
+        border: 1px solid #ddd;
+    }
+
+    .btn-back:hover {
+        background: #e9ecef;
+    }
+
+    .btn-update {
+        background: #1f6a72;
+        color: white;
+        border: none;
+    }
+
+    .btn-update:hover {
+        background: #2c3e50;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+        .ticket-header {
+            flex-direction: column;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .ticket-content {
+            padding: 20px;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Alert styles */
+    .alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 500;
+        z-index: 1000;
+        animation: slideIn 0.5s ease-out;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+    }
+
+    .alert-error {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+</style>
+
+<script>
+    // Function to show alert
+    function showAlert(message, type = 'success') {
+        // Remove any existing alerts
+        const existingAlert = document.querySelector('.alert');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+
+        // Create new alert
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type}`;
+        alert.textContent = message;
+        document.body.appendChild(alert);
+
+        // Remove alert after 3 seconds
+        setTimeout(() => {
+            alert.style.animation = 'slideOut 0.5s ease-out';
+            setTimeout(() => alert.remove(), 500);
+        }, 3000);
+    }
+
+    // Check URL parameters for messages
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('message');
+    const error = urlParams.get('error');
+
+    if (message) {
+        showAlert(message, 'success');
+    }
+    if (error) {
+        showAlert(error, 'error');
+    }
+
+    // Form submission handling
+    document.getElementById('statusForm').addEventListener('submit', function(e) {
+        const currentStatus = '<%= ticket.status %>';
+        const newStatus = document.getElementById('status').value;
+        
+        if (currentStatus === newStatus) {
+            e.preventDefault();
+            showAlert('Status is already set to ' + newStatus, 'error');
+        }
+    });
+</script>
+ 
